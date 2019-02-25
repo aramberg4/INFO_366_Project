@@ -11,9 +11,12 @@ https://www.mongodb.com/download-center/community
 https://www.youtube.com/watch?v=FwMwO8pXfq0
 
 # Import data
+Sourced from:
+https://github.com/adrpadua/5e-database/blob/master/5e-SRD-Spells.json
+
 Requirements:
-1. Must have MongoDB installed
-2. Must have Git repo cloned locally
+- Must have MongoDB installed
+- Must have Git repo cloned locally
 
 1. Open up command prompt or terminal 
 2. Run: mongod
@@ -26,8 +29,8 @@ Requirements:
 
 # Download PyMongo
 Requirements:
-1. Must have Python 3.x installed
-2. Must have pip installed
+- Must have Python 3.x installed
+- Must have pip installed
 
 1. Open up command prompt or terminal
 2. Run: python -m pip install pymongo
