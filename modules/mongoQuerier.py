@@ -20,6 +20,22 @@ class MongoQuerier():
 
 	#query methods
 
-	def find(self, queryString):
-		data = self.__collection.find({queryString})
+	#create
+
+
+	#read
+	def find(self, queryDict):
+		data = self.__collection.find(queryDict)
 		return data
+
+	#update
+
+
+	#delete
+	def deleteOne(self, queryDict):
+		data = self.__collection.delete_one(queryDict)
+
+	def deleteMany(self, queryDict):
+		data = self.__collection.delete_many(queryDict)
+		print(data.deleted_count, " documents deleted.")
+
