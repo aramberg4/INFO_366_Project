@@ -1,153 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>windowMain</class>
- <widget class="QMainWindow" name="windowMain">
+ <class>windowAdd</class>
+ <widget class="QMainWindow" name="windowAdd">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1280</width>
-    <height>720</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MongoD&amp;D</string>
+   <string>Add Spell</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QWidget" name="gridLayoutWidget">
+   <widget class="QPushButton" name="buttonSave">
+    <property name="geometry">
+     <rect>
+      <x>610</x>
+      <y>520</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Save</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="buttonCancel">
+    <property name="geometry">
+     <rect>
+      <x>700</x>
+      <y>520</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Cancel</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="gridLayoutWidget_2">
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>15</y>
-      <width>1241</width>
-      <height>141</height>
+      <y>20</y>
+      <width>761</width>
+      <height>451</height>
      </rect>
     </property>
-    <layout class="QGridLayout" name="gridLayout">
-     <item row="3" column="7">
-      <widget class="QComboBox" name="filterClass">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>125</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <item>
-        <property name="text">
-         <string/>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Bard</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Cleric</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Druid</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Paladin</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Ranger</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Sorcerer</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Warlock</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Wizard</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item row="3" column="6">
-      <widget class="QComboBox" name="filterSchool">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>125</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <item>
-        <property name="text">
-         <string/>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Abjuration</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Conjuration</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Divination</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Enchantment</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Evocation</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Illusion</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Necromancy</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Transmutation</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item row="2" column="4">
-      <widget class="QLabel" name="labelLevel">
+    <layout class="QGridLayout" name="gridLayout_2">
+     <item row="7" column="0">
+      <widget class="QLabel" name="labelConcentration">
        <property name="maximumSize">
         <size>
          <width>16777215</width>
@@ -155,11 +59,118 @@
         </size>
        </property>
        <property name="text">
-        <string>Level</string>
+        <string>Concentration</string>
        </property>
       </widget>
      </item>
-     <item row="2" column="0">
+     <item row="6" column="0">
+      <widget class="QLabel" name="labelClasses">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Classes</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="labelAddSpell">
+       <property name="font">
+        <font>
+         <pointsize>16</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Add Spell</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="labelRange">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Range</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QComboBox" name="filterRange">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>125</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <item>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Self</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Touch</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Sight</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Special</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="labelSchool">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>School</string>
+       </property>
+      </widget>
+     </item>
+     <item row="8" column="0">
+      <widget class="QLabel" name="labelRitual">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Ritual</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
       <widget class="QLabel" name="labelName">
        <property name="maximumSize">
         <size>
@@ -172,8 +183,8 @@
        </property>
       </widget>
      </item>
-     <item row="3" column="1">
-      <widget class="QPushButton" name="buttonName">
+     <item row="7" column="1">
+      <widget class="QComboBox" name="filterConcentration">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -182,17 +193,29 @@
        </property>
        <property name="maximumSize">
         <size>
-         <width>30</width>
+         <width>60</width>
          <height>16777215</height>
         </size>
        </property>
-       <property name="text">
-        <string>&gt;</string>
-       </property>
+       <item>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>yes</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>no</string>
+        </property>
+       </item>
       </widget>
      </item>
-     <item row="3" column="3">
-      <widget class="QPushButton" name="buttonDescription">
+     <item row="8" column="1">
+      <widget class="QComboBox" name="filterRitual">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -201,16 +224,54 @@
        </property>
        <property name="maximumSize">
         <size>
-         <width>30</width>
+         <width>60</width>
          <height>16777215</height>
         </size>
        </property>
+       <item>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>yes</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>no</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="labelDescription">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>20</height>
+        </size>
+       </property>
        <property name="text">
-        <string>&gt;</string>
+        <string>Description</string>
        </property>
       </widget>
      </item>
-     <item row="3" column="2">
+     <item row="3" column="0">
+      <widget class="QLabel" name="labelLevel">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Level</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
       <widget class="QLineEdit" name="filterDescription">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -226,7 +287,7 @@
        </property>
       </widget>
      </item>
-     <item row="3" column="0">
+     <item row="1" column="1">
       <widget class="QLineEdit" name="filterName">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -236,13 +297,13 @@
        </property>
        <property name="maximumSize">
         <size>
-         <width>125</width>
+         <width>16777215</width>
          <height>16777215</height>
         </size>
        </property>
       </widget>
      </item>
-     <item row="3" column="4">
+     <item row="3" column="1">
       <widget class="QComboBox" name="filterLevel">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -313,21 +374,8 @@
        </item>
       </widget>
      </item>
-     <item row="2" column="2">
-      <widget class="QLabel" name="labelDescription">
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>20</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Description</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="5">
-      <widget class="QComboBox" name="filterRange">
+     <item row="5" column="1">
+      <widget class="QComboBox" name="filterSchool">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -347,41 +395,48 @@
        </item>
        <item>
         <property name="text">
-         <string>Self</string>
+         <string>Abjuration</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Touch</string>
+         <string>Conjuration</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Sight</string>
+         <string>Divination</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Special</string>
+         <string>Enchantment</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Evocation</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Illusion</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Necromancy</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Transmutation</string>
         </property>
        </item>
       </widget>
      </item>
-     <item row="2" column="5">
-      <widget class="QLabel" name="labelRange">
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>20</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Range</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="9">
-      <widget class="QComboBox" name="filterRitual">
+     <item row="6" column="1">
+      <widget class="QComboBox" name="filterClass">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -390,7 +445,7 @@
        </property>
        <property name="maximumSize">
         <size>
-         <width>60</width>
+         <width>125</width>
          <height>16777215</height>
         </size>
        </property>
@@ -401,100 +456,66 @@
        </item>
        <item>
         <property name="text">
-         <string>yes</string>
+         <string>Bard</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>no</string>
+         <string>Cleric</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Druid</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Paladin</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Ranger</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Sorcerer</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Warlock</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Wizard</string>
         </property>
        </item>
       </widget>
      </item>
-     <item row="2" column="6">
-      <widget class="QLabel" name="labelSchool">
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>20</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>School</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="8">
-      <widget class="QLabel" name="labelConcentration">
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>20</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Concentration</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="7">
-      <widget class="QLabel" name="labelClasses">
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>20</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Classes</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="9">
-      <widget class="QLabel" name="labelRitual">
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>20</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Ritual</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="8">
-      <widget class="QComboBox" name="filterConcentration">
+     <item row="9" column="0">
+      <widget class="QLabel" name="labelComponents">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
        <property name="maximumSize">
         <size>
-         <width>60</width>
-         <height>16777215</height>
+         <width>16777215</width>
+         <height>20</height>
         </size>
        </property>
-       <item>
-        <property name="text">
-         <string/>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>yes</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>no</string>
-        </property>
-       </item>
+       <property name="text">
+        <string>Components</string>
+       </property>
       </widget>
      </item>
-     <item row="3" column="10">
+     <item row="9" column="1">
       <widget class="QComboBox" name="filterComponents">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -535,59 +556,6 @@
        </item>
       </widget>
      </item>
-     <item row="1" column="11">
-      <widget class="QPushButton" name="pushButton">
-       <property name="text">
-        <string>+ Add Spell</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="10" colspan="2">
-      <widget class="QLabel" name="labelComponents">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>20</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Components</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="labelMongoDD">
-       <property name="font">
-        <font>
-         <pointsize>16</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Mongo D&amp;D</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="11">
-      <widget class="QPushButton" name="buttonClear">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>Clear Filters</string>
-       </property>
-      </widget>
-     </item>
     </layout>
    </widget>
   </widget>
@@ -596,7 +564,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1280</width>
+     <width>800</width>
      <height>21</height>
     </rect>
    </property>
