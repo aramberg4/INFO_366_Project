@@ -132,6 +132,14 @@ class Ui_MainWindow(object):
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton.setGeometry(QtCore.QRect(1170, 60, 91, 23))
         self.pushButton.setObjectName("pushButton")
+        self.label = QtWidgets.QLabel(self.centralwidget)
+        self.label.setGeometry(QtCore.QRect(20, 10, 141, 31))
+        font = QtGui.QFont()
+        font.setPointSize(16)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label.setFont(font)
+        self.label.setObjectName("label")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1280, 21))
@@ -146,7 +154,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "MongoD&D"))
         self.filterClass.setItemText(1, _translate("MainWindow", "Bard"))
         self.filterClass.setItemText(2, _translate("MainWindow", "Cleric"))
         self.filterClass.setItemText(3, _translate("MainWindow", "Druid"))
@@ -198,6 +206,7 @@ class Ui_MainWindow(object):
         self.buttonDescription.setText(_translate("MainWindow", ">"))
         self.buttonClear.setText(_translate("MainWindow", "Clear Filters"))
         self.pushButton.setText(_translate("MainWindow", "+ Add Spell"))
+        self.label.setText(_translate("MainWindow", "Mongo D&D"))
 
 
 if __name__ == "__main__":
