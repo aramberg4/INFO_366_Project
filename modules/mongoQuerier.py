@@ -8,7 +8,7 @@ class MongoQuerier():
 
 	#getters
 	def getClient(self):
-		return slef.__client
+		return self.__client
 
 	def getDb(self):
 		return self.__db

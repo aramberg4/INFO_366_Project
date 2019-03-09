@@ -14,10 +14,12 @@ def dropDown(window, optionList, selection, r, c):
 #Submit button
 def submit():
 	#Add vars to query dictionary
-	qd = {
-		'classes':{'$elemMatch':{'name':characterClass.get()}},
-		'level':level.get()
-	}
+	qd = {}
+	if characterClass.get() is not '':
+		qd['classes'] = {'$elemMatch':{'name':characterClass.get()}}
+	if level.get() is not '':
+		qd['level'] = level.get()
+
 	try:
 		myMongo = mongoQuerier.MongoQuerier()
 		cursor = myMongo.find(qd)
