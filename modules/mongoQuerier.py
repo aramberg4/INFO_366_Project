@@ -28,6 +28,10 @@ class MongoQuerier():
 		data = self.__collection.find(queryDict)
 		return data
 
+	def find_one(self, queryDict):
+		data = self.__collection.find_one(queryDict)
+		return data
+
 	#update
 
 
