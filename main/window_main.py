@@ -14,6 +14,7 @@ import sys
 sys.path.append("..")
 from modules import mongoQuerier
 from pprint import pprint
+from window_addspell import Ui_windowAdd
 
 class Ui_windowMain(object):
     def setupUi(self, windowMain):
@@ -88,9 +89,10 @@ class Ui_windowMain(object):
         self.labelComponents.setMaximumSize(QtCore.QSize(16777215, 20))
         self.labelComponents.setObjectName("labelComponents")
         self.gridLayout.addWidget(self.labelComponents, 3, 7, 1, 3)
-        self.pushButton = QtWidgets.QPushButton(self.gridLayoutWidget)
-        self.pushButton.setObjectName("pushButton")
-        self.gridLayout.addWidget(self.pushButton, 1, 9, 1, 1)
+        self.buttonAddSpell = QtWidgets.QPushButton(self.gridLayoutWidget)
+        self.buttonAddSpell.setObjectName("buttonAddSpell")
+        self.buttonAddSpell.clicked.connect(self.addSpell)
+        self.gridLayout.addWidget(self.buttonAddSpell, 1, 9, 1, 1)
         self.filterName = QtWidgets.QLineEdit(self.gridLayoutWidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -257,7 +259,7 @@ class Ui_windowMain(object):
         self.labelSchool.setText(_translate("windowMain", "School"))
         self.labelRitual.setText(_translate("windowMain", "Ritual"))
         self.labelComponents.setText(_translate("windowMain", "Components"))
-        self.pushButton.setText(_translate("windowMain", "+ Add Spell"))
+        self.buttonAddSpell.setText(_translate("windowMain", "+ Add Spell"))
         self.filterRitual.setItemText(1, _translate("windowMain", "yes"))
         self.filterRitual.setItemText(2, _translate("windowMain", "no"))
         self.filterRange.setItemText(1, _translate("windowMain", "Self"))
@@ -400,6 +402,12 @@ class Ui_windowMain(object):
         self.filterConcentration.setCurrentIndex(0)
         self.filterRitual.setCurrentIndex(0)
         self.filterComponents.setCurrentIndex(0)
+
+    def addSpell(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui = Ui_windowAdd()
+        self.ui.setupUi(self.window)
+        self.window.show()
  
 
 if __name__ == "__main__":
