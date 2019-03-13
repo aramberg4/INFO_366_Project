@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'C:\Users\Victoria Ta\Desktop\INFO366\Project\INFO_366_Project\main\gui-add.ui'
+# Form implementation generated from reading ui file 'C:\Users\Victoria Ta\Desktop\INFO366\Project\INFO_366_Project\main\windowAddSpell.ui'
 #
 # Created by: PyQt5 UI code generator 5.11.3
 #
