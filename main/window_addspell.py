@@ -269,10 +269,9 @@ class Ui_windowAdd(object):
         self.filterClass.setItemText(7, _translate("windowAdd", "Warlock"))
         self.filterClass.setItemText(8, _translate("windowAdd", "Wizard"))
         self.labelComponents.setText(_translate("windowAdd", "Components"))
-        self.filterComponents.setItemText(1, _translate("windowAdd", "no verbal"))
-        self.filterComponents.setItemText(2, _translate("windowAdd", "no somatic"))
-        self.filterComponents.setItemText(3, _translate("windowAdd", "no material"))
-        self.filterComponents.setItemText(4, _translate("windowAdd", "no cost"))
+        self.filterComponents.setItemText(1, _translate("windowAdd", "V"))
+        self.filterComponents.setItemText(2, _translate("windowAdd", "S"))
+        self.filterComponents.setItemText(3, _translate("windowAdd", "M"))
 
 
 if __name__ == "__main__":
