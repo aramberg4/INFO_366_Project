@@ -58,7 +58,6 @@ class Ui_windowMain(object):
         self.filterComponents.addItem("")
         self.filterComponents.addItem("")
         self.filterComponents.addItem("")
-        self.filterComponents.addItem("")
         self.gridLayout.addWidget(self.filterComponents, 4, 7, 1, 1)
         self.buttonClear = QtWidgets.QPushButton(self.gridLayoutWidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
@@ -228,11 +227,12 @@ class Ui_windowMain(object):
         self.labelMongoDD.setObjectName("labelMongoDD")
         self.gridLayout.addWidget(self.labelMongoDD, 1, 0, 1, 1)
         self.tableWidget = QtWidgets.QTableWidget(self.centralwidget)
-        self.tableWidget.setGeometry(QtCore.QRect(30, 230, 661, 811))
+        self.tableWidget.setGeometry(QtCore.QRect(30, 230, 640, 811))
         self.tableWidget.setObjectName("spellTable")
         self.spellBox = QtWidgets.QTextEdit(self.centralwidget)
         self.spellBox.setGeometry(QtCore.QRect(770, 230, 1121, 811))
         self.spellBox.setObjectName("spellBox")
+        self.spellBox.setReadOnly(True)
         windowMain.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(windowMain)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1920, 22))
@@ -250,10 +250,9 @@ class Ui_windowMain(object):
         windowMain.setWindowTitle(_translate("windowMain", "MongoD&D"))
         self.labelClasses.setText(_translate("windowMain", "Classes"))
         self.labelConcentration.setText(_translate("windowMain", "Concentration"))
-        self.filterComponents.setItemText(1, _translate("windowMain", "no verbal"))
-        self.filterComponents.setItemText(2, _translate("windowMain", "no somatic"))
-        self.filterComponents.setItemText(3, _translate("windowMain", "no material"))
-        self.filterComponents.setItemText(4, _translate("windowMain", "no cost"))
+        self.filterComponents.setItemText(1, _translate("windowMain", "V"))
+        self.filterComponents.setItemText(2, _translate("windowMain", "S"))
+        self.filterComponents.setItemText(3, _translate("windowMain", "M"))
         self.buttonClear.setText(_translate("windowMain", "Clear Filters"))
         self.buttonSubmit.setText(_translate("windowMain", "Submit"))
         self.labelSchool.setText(_translate("windowMain", "School"))
@@ -360,14 +359,18 @@ class Ui_windowMain(object):
     def populateTable(self):
         # Populate table
         self.tableWidget.setRowCount(self.cursor.count())
-        self.tableWidget.setColumnCount(3)
-        self.tableWidget.setHorizontalHeaderLabels(['Name', 'Level', 'School'])
+        self.tableWidget.setColumnCount(6)
+        self.tableWidget.setHorizontalHeaderLabels(['Name', 'Level', 'School', 'Components', 'Concentration', 'Ritual'])
         i = 0
         for doc in self.cursor:
             print('name: ' + doc["name"])
-            self.tableWidget.setItem(i,0, QTableWidgetItem(str(doc["name"])))
+            self.tableWidget.setItem(i,0, QTableWidgetItem(str(doc['name'])))
             self.tableWidget.setItem(i,1, QTableWidgetItem(str(doc['level'])))
             self.tableWidget.setItem(i,2, QTableWidgetItem(doc['school']['name']))
+            components = str(doc['components']).replace('\'', '').replace('[', '').replace(']', '')
+            self.tableWidget.setItem(i,3, QTableWidgetItem(components))
+            self.tableWidget.setItem(i,4, QTableWidgetItem(str(doc['concentration'])))
+            self.tableWidget.setItem(i,5, QTableWidgetItem(str(doc['ritual'])))
             i += 1
 
     def populateSpellBox(self, row, column):
