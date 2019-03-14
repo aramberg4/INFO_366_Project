@@ -206,10 +206,12 @@ class Ui_windowAdd(object):
         self.gridLayout_2.addWidget(self.filterSchool, 5, 1, 1, 1)
 
         # [START] CLASSES
-        self.classLayout = QtWidgets.QGridLayout()
+        self.classLayoutWidget = QtWidgets.QWidget(self.centralwidget)
+        self.classLayoutWidget.setObjectName("classLayoutWidget")
+        self.classLayout = QtWidgets.QGridLayout(self.classLayoutWidget)
         self.classLayout.setContentsMargins(0, 0, 0, 0)
         self.classLayout.setObjectName("classLayout")
-        self.gridLayout_2.addLayout(self.classLayout, 6, 1, 1, 1)
+        self.gridLayout_2.addWidget(self.classLayoutWidget, 6, 1, 1, 1)
 
         self.checkboxClassBard = QCheckBox("Bard")
         self.checkboxClassCleric = QCheckBox("Cleric")
@@ -240,10 +242,12 @@ class Ui_windowAdd(object):
         self.labelComponents.setObjectName("labelComponents")
         self.gridLayout_2.addWidget(self.labelComponents, 10, 0, 1, 1)
 
-        self.componentLayout = QtWidgets.QGridLayout()
+        self.componentLayoutWidget = QtWidgets.QWidget(self.centralwidget)
+        self.componentLayoutWidget.setObjectName("componentLayoutWidget")
+        self.componentLayout = QtWidgets.QGridLayout(self.componentLayoutWidget)
         self.componentLayout.setContentsMargins(0, 0, 0, 0)
         self.componentLayout.setObjectName("componentLayout")
-        self.gridLayout_2.addLayout(self.componentLayout, 10, 1, 1, 1)
+        self.gridLayout_2.addWidget(self.componentLayoutWidget, 10, 1, 1, 1)
 
         self.checkboxComponentV = QCheckBox("V")
         self.checkboxComponentS = QCheckBox("S")
@@ -423,11 +427,11 @@ class Ui_windowAdd(object):
 
         print(self.insertData)
 
-        #print('Attemping insert...')
-        #print('Instantiating MongoQuerier...')
-        #self.mq = mongoQuerier.MongoQuerier()
-        #print('Executing insert...')
-        #self.mq.insertOne(self.insertData)
+        print('Attemping insert...')
+        print('Instantiating MongoQuerier...')
+        self.mq = mongoQuerier.MongoQuerier()
+        print('Executing insert...')
+        self.mq.insertOne(self.insertData)
 
 
 if __name__ == "__main__":
