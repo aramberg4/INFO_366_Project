@@ -19,6 +19,7 @@ class Ui_windowAdd(object):
         windowAdd.setObjectName("windowAdd")
         windowAdd.resize(800, 600)
 
+        # Background
         oImage = QImage("background_addspell.jpg")
         sImage = oImage.scaled(QSize(800,600))  # resize Image to widgets size
         palette = QPalette()
@@ -27,13 +28,16 @@ class Ui_windowAdd(object):
 
         self.centralwidget = QtWidgets.QWidget(windowAdd)
         self.centralwidget.setObjectName("centralwidget")
+
         self.buttonSave = QtWidgets.QPushButton(self.centralwidget)
         self.buttonSave.setGeometry(QtCore.QRect(610, 520, 75, 23))
         self.buttonSave.setObjectName("buttonSave")
-        self.buttonSave.clicked.connect(self.saveSpell)
+        self.buttonSave.clicked.connect(lambda: self.saveSpell(windowAdd))
         self.buttonCancel = QtWidgets.QPushButton(self.centralwidget)
         self.buttonCancel.setGeometry(QtCore.QRect(700, 520, 75, 23))
         self.buttonCancel.setObjectName("buttonCancel")
+        self.buttonCancel.clicked.connect(lambda: self.closeWindow(windowAdd))
+
         self.gridLayoutWidget_2 = QtWidgets.QWidget(self.centralwidget)
         self.gridLayoutWidget_2.setGeometry(QtCore.QRect(20, 20, 761, 451))
         self.gridLayoutWidget_2.setObjectName("gridLayoutWidget_2")
@@ -378,7 +382,10 @@ class Ui_windowAdd(object):
         self.checkboxComponentS.setStyleSheet('color: white')
         self.checkboxComponentM.setStyleSheet('color: white')
 
-    def saveSpell(self):
+    def closeWindow(self, windowAdd):
+        windowAdd.close()
+
+    def saveSpell(self, windowAdd):
         # Check which classes are selected
         i = 0
         chosenClasses = []
@@ -432,6 +439,7 @@ class Ui_windowAdd(object):
         self.mq = mongoQuerier.MongoQuerier()
         print('Executing insert...')
         self.mq.insertOne(self.insertData)
+        self.closeWindow(windowAdd)
 
 
 if __name__ == "__main__":
