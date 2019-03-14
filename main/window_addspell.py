@@ -7,16 +7,30 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QImage, QPalette, QBrush
+from PyQt5.QtCore import QSize, QRegExp
+from PyQt5.QtWidgets import QCheckBox
+import sys
+sys.path.append("..")
+from modules import mongoQuerier
 
 class Ui_windowAdd(object):
     def setupUi(self, windowAdd):
         windowAdd.setObjectName("windowAdd")
         windowAdd.resize(800, 600)
+
+        oImage = QImage("background_addspell.jpg")
+        sImage = oImage.scaled(QSize(800,600))  # resize Image to widgets size
+        palette = QPalette()
+        palette.setBrush(10, QBrush(sImage))    # 10 = Windowrole
+        windowAdd.setPalette(palette)
+
         self.centralwidget = QtWidgets.QWidget(windowAdd)
         self.centralwidget.setObjectName("centralwidget")
         self.buttonSave = QtWidgets.QPushButton(self.centralwidget)
         self.buttonSave.setGeometry(QtCore.QRect(610, 520, 75, 23))
         self.buttonSave.setObjectName("buttonSave")
+        self.buttonSave.clicked.connect(self.saveSpell)
         self.buttonCancel = QtWidgets.QPushButton(self.centralwidget)
         self.buttonCancel.setGeometry(QtCore.QRect(700, 520, 75, 23))
         self.buttonCancel.setObjectName("buttonCancel")
@@ -99,6 +113,31 @@ class Ui_windowAdd(object):
         self.filterRitual.addItem("")
         self.filterRitual.addItem("")
         self.gridLayout_2.addWidget(self.filterRitual, 8, 1, 1, 1)
+
+        # [START] CASTING TIME
+
+        self.labelCastingTime = QtWidgets.QLabel(self.gridLayoutWidget_2)
+        self.labelCastingTime.setMaximumSize(QtCore.QSize(16777215, 20))
+        self.labelCastingTime.setObjectName("labelCastingTime")
+        self.gridLayout_2.addWidget(self.labelCastingTime, 9, 0, 1, 1)
+
+        self.filterCastingTime = QtWidgets.QComboBox(self.gridLayoutWidget_2)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.filterRitual.sizePolicy().hasHeightForWidth())
+        self.filterCastingTime.setSizePolicy(sizePolicy)
+        self.filterCastingTime.setMaximumSize(QtCore.QSize(16777215, 20))
+        self.filterCastingTime.setObjectName("filterCastingTime")
+        self.filterCastingTime.addItem("")
+        self.filterCastingTime.setItemText(0, "")
+        self.filterCastingTime.addItem("")
+        self.filterCastingTime.addItem("")
+        self.filterCastingTime.addItem("")
+        self.gridLayout_2.addWidget(self.filterCastingTime, 9, 1, 1, 1)
+
+        # [END] CASTING TIME
+
         self.labelDescription = QtWidgets.QLabel(self.gridLayoutWidget_2)
         self.labelDescription.setMaximumSize(QtCore.QSize(16777215, 20))
         self.labelDescription.setObjectName("labelDescription")
@@ -165,25 +204,32 @@ class Ui_windowAdd(object):
         self.filterSchool.addItem("")
         self.filterSchool.addItem("")
         self.gridLayout_2.addWidget(self.filterSchool, 5, 1, 1, 1)
-        self.filterClass = QtWidgets.QComboBox(self.gridLayoutWidget_2)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.filterClass.sizePolicy().hasHeightForWidth())
-        self.filterClass.setSizePolicy(sizePolicy)
-        self.filterClass.setMaximumSize(QtCore.QSize(125, 16777215))
-        self.filterClass.setObjectName("filterClass")
-        self.filterClass.addItem("")
-        self.filterClass.setItemText(0, "")
-        self.filterClass.addItem("")
-        self.filterClass.addItem("")
-        self.filterClass.addItem("")
-        self.filterClass.addItem("")
-        self.filterClass.addItem("")
-        self.filterClass.addItem("")
-        self.filterClass.addItem("")
-        self.filterClass.addItem("")
-        self.gridLayout_2.addWidget(self.filterClass, 6, 1, 1, 1)
+
+        # [START] CLASSES
+        self.classLayout = QtWidgets.QGridLayout()
+        self.classLayout.setContentsMargins(0, 0, 0, 0)
+        self.classLayout.setObjectName("classLayout")
+        self.gridLayout_2.addLayout(self.classLayout, 6, 1, 1, 1)
+
+        self.checkboxClassBard = QCheckBox("Bard")
+        self.checkboxClassCleric = QCheckBox("Cleric")
+        self.checkboxClassDruid = QCheckBox("Druid")
+        self.checkboxClassPaladin = QCheckBox("Paladin")
+        self.checkboxClassRanger = QCheckBox("Ranger")
+        self.checkboxClassSorcerer = QCheckBox("Sorcerer")
+        self.checkboxClassWarlock = QCheckBox("Warlock")
+        self.checkboxClassWizard = QCheckBox("Wizard")
+        self.classLayout.addWidget(self.checkboxClassBard, 0, 0, 1, 1)
+        self.classLayout.addWidget(self.checkboxClassCleric, 0, 1, 1, 1)
+        self.classLayout.addWidget(self.checkboxClassDruid, 1, 0, 1, 1)
+        self.classLayout.addWidget(self.checkboxClassPaladin, 1, 1, 1, 1)
+        self.classLayout.addWidget(self.checkboxClassRanger, 2, 0, 1, 1)
+        self.classLayout.addWidget(self.checkboxClassSorcerer, 2, 1, 1, 1)
+        self.classLayout.addWidget(self.checkboxClassWarlock, 3, 0, 1, 1)
+        self.classLayout.addWidget(self.checkboxClassWizard, 3, 1, 1, 1)
+        # [END] CLASSES
+
+        # [START] COMPONENTS
         self.labelComponents = QtWidgets.QLabel(self.gridLayoutWidget_2)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
@@ -192,22 +238,51 @@ class Ui_windowAdd(object):
         self.labelComponents.setSizePolicy(sizePolicy)
         self.labelComponents.setMaximumSize(QtCore.QSize(16777215, 20))
         self.labelComponents.setObjectName("labelComponents")
-        self.gridLayout_2.addWidget(self.labelComponents, 9, 0, 1, 1)
-        self.filterComponents = QtWidgets.QComboBox(self.gridLayoutWidget_2)
+        self.gridLayout_2.addWidget(self.labelComponents, 10, 0, 1, 1)
+
+        self.componentLayout = QtWidgets.QGridLayout()
+        self.componentLayout.setContentsMargins(0, 0, 0, 0)
+        self.componentLayout.setObjectName("componentLayout")
+        self.gridLayout_2.addLayout(self.componentLayout, 10, 1, 1, 1)
+
+        self.checkboxComponentV = QCheckBox("V")
+        self.checkboxComponentS = QCheckBox("S")
+        self.checkboxComponentM = QCheckBox("M")
+        self.componentLayout.addWidget(self.checkboxComponentV, 0, 0, 1, 1)
+        self.componentLayout.addWidget(self.checkboxComponentS, 0, 1, 1, 1)
+        self.componentLayout.addWidget(self.checkboxComponentM, 0, 2, 1, 1)
+        # [END] COMPONENTS
+
+        # [START] DURATION
+        self.labelDuration = QtWidgets.QLabel(self.gridLayoutWidget_2)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.labelDuration.sizePolicy().hasHeightForWidth())
+        self.labelDuration.setSizePolicy(sizePolicy)
+        self.labelDuration.setMaximumSize(QtCore.QSize(16777215, 20))
+        self.labelDuration.setObjectName("labelDuration")
+        self.gridLayout_2.addWidget(self.labelDuration, 11, 0, 1, 1)
+        self.filterDuration = QtWidgets.QComboBox(self.gridLayoutWidget_2)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.filterComponents.sizePolicy().hasHeightForWidth())
-        self.filterComponents.setSizePolicy(sizePolicy)
-        self.filterComponents.setMaximumSize(QtCore.QSize(125, 16777215))
-        self.filterComponents.setObjectName("filterComponents")
-        self.filterComponents.addItem("")
-        self.filterComponents.setItemText(0, "")
-        self.filterComponents.addItem("")
-        self.filterComponents.addItem("")
-        self.filterComponents.addItem("")
-        self.filterComponents.addItem("")
-        self.gridLayout_2.addWidget(self.filterComponents, 9, 1, 1, 1)
+        sizePolicy.setHeightForWidth(self.filterDuration.sizePolicy().hasHeightForWidth())
+        self.filterDuration.setSizePolicy(sizePolicy)
+        self.filterDuration.setMaximumSize(QtCore.QSize(125, 16777215))
+        self.filterDuration.setObjectName("filterDuration")
+        self.filterDuration.addItem("")
+        self.filterDuration.setItemText(0, "")
+        self.filterDuration.addItem("")
+        self.filterDuration.addItem("")
+        self.filterDuration.addItem("")
+        self.filterDuration.addItem("")
+        self.filterDuration.addItem("")
+        self.filterDuration.addItem("")
+        self.filterDuration.addItem("")
+        self.gridLayout_2.addWidget(self.filterDuration, 11, 1, 1, 1)
+        # [END] DURATION
+
         windowAdd.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(windowAdd)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 21))
@@ -235,6 +310,10 @@ class Ui_windowAdd(object):
         self.filterRange.setItemText(4, _translate("windowAdd", "Special"))
         self.labelSchool.setText(_translate("windowAdd", "School"))
         self.labelRitual.setText(_translate("windowAdd", "Ritual"))
+        self.labelCastingTime.setText(_translate("windowAdd", "Casting Time"))
+        self.filterCastingTime.setItemText(1, _translate("windowAdd", "1 action"))
+        self.filterCastingTime.setItemText(2, _translate("windowAdd", "1 bonus action"))
+        self.filterCastingTime.setItemText(3, _translate("windowAdd", "1 reaction"))
         self.labelName.setText(_translate("windowAdd", "Name"))
         self.filterConcentration.setItemText(1, _translate("windowAdd", "yes"))
         self.filterConcentration.setItemText(2, _translate("windowAdd", "no"))
@@ -260,18 +339,95 @@ class Ui_windowAdd(object):
         self.filterSchool.setItemText(6, _translate("windowAdd", "Illusion"))
         self.filterSchool.setItemText(7, _translate("windowAdd", "Necromancy"))
         self.filterSchool.setItemText(8, _translate("windowAdd", "Transmutation"))
-        self.filterClass.setItemText(1, _translate("windowAdd", "Bard"))
-        self.filterClass.setItemText(2, _translate("windowAdd", "Cleric"))
-        self.filterClass.setItemText(3, _translate("windowAdd", "Druid"))
-        self.filterClass.setItemText(4, _translate("windowAdd", "Paladin"))
-        self.filterClass.setItemText(5, _translate("windowAdd", "Ranger"))
-        self.filterClass.setItemText(6, _translate("windowAdd", "Sorcerer"))
-        self.filterClass.setItemText(7, _translate("windowAdd", "Warlock"))
-        self.filterClass.setItemText(8, _translate("windowAdd", "Wizard"))
         self.labelComponents.setText(_translate("windowAdd", "Components"))
-        self.filterComponents.setItemText(1, _translate("windowAdd", "V"))
-        self.filterComponents.setItemText(2, _translate("windowAdd", "S"))
-        self.filterComponents.setItemText(3, _translate("windowAdd", "M"))
+        self.labelDuration.setText(_translate("windowAdd", "Duration"))
+        self.filterDuration.setItemText(1, _translate("windowAdd", "Instantaneous"))
+        self.filterDuration.setItemText(2, _translate("windowAdd", "Until dispelled"))
+        self.filterDuration.setItemText(3, _translate("windowAdd", "Special"))
+        self.filterDuration.setItemText(4, _translate("windowAdd", "1 minute"))
+        self.filterDuration.setItemText(5, _translate("windowAdd", "1 hour"))
+        self.filterDuration.setItemText(6, _translate("windowAdd", "8 hours"))
+        self.filterDuration.setItemText(7, _translate("windowAdd", "24 hours"))
+
+        self.labelAddSpell.setStyleSheet('color: white;'
+                                        'font: 20pt "Times New Roman";'
+                                            )
+        self.labelName.setStyleSheet('color: white')
+        self.labelDescription.setStyleSheet('color: white')
+        self.labelLevel.setStyleSheet('color: white')
+        self.labelRange.setStyleSheet('color: white')
+        self.labelSchool.setStyleSheet('color: white')
+        self.labelClasses.setStyleSheet('color: white')
+        self.labelConcentration.setStyleSheet('color: white')
+        self.labelRitual.setStyleSheet('color: white')
+        self.labelComponents.setStyleSheet('color: white')
+        self.labelDuration.setStyleSheet('color: white')
+        self.checkboxClassBard.setStyleSheet('color: white')
+        self.checkboxClassCleric.setStyleSheet('color: white')
+        self.checkboxClassDruid.setStyleSheet('color: white')
+        self.checkboxClassPaladin.setStyleSheet('color: white')
+        self.checkboxClassRanger.setStyleSheet('color: white')
+        self.checkboxClassSorcerer.setStyleSheet('color: white')
+        self.checkboxClassWarlock.setStyleSheet('color: white')
+        self.checkboxClassWizard.setStyleSheet('color: white')
+        self.checkboxComponentV.setStyleSheet('color: white')
+        self.checkboxComponentS.setStyleSheet('color: white')
+        self.checkboxComponentM.setStyleSheet('color: white')
+
+    def saveSpell(self):
+        # Check which classes are selected
+        i = 0
+        chosenClasses = []
+        # Iterating through classLayout and returns list of classes selected
+        for checkboxClass in self.classLayout.parentWidget().findChildren(QCheckBox):
+            if checkboxClass.isChecked():
+                chosenClasses.append({ 'name': checkboxClass.text() })
+                i += 1
+        print(chosenClasses)
+
+        # Check which components are selected
+        j = 0
+        chosenComponents = []
+        # Iterating through componentLayout and returns list of components selected
+        for checkboxComponent in self.componentLayout.parentWidget().findChildren(QCheckBox):
+            if checkboxComponent.isChecked():
+                chosenComponents.append(checkboxComponent.text())
+                j += 1
+        print(chosenComponents)
+
+        # Compile values for each field into a doc
+        self.insertData = {}
+        if self.filterName.text() is not '':
+            self.insertData['name'] = self.filterName.text()
+        if self.filterDescription.text() is not '':
+            self.insertData['desc'] = self.filterDescription.text()
+        if self.filterLevel.currentText() is not '':
+            self.insertData['level'] = int(self.filterLevel.currentText())
+        if self.filterRange.currentText() is not '':
+            self.insertData['range'] = self.filterRange.currentText()
+        if self.filterSchool.currentText() is not '':
+            self.insertData['school'] = { 'name': self.filterSchool.currentText()}
+        if len(chosenClasses) > 0:
+            for chosenClass in chosenClasses:
+                self.insertData['classes'] = chosenClasses
+        if self.filterConcentration.currentText() is not '':
+            self.insertData['concentration'] = self.filterConcentration.currentText()
+        if self.filterRitual.currentText() is not '':
+            self.insertData['ritual'] = self.filterRitual.currentText()
+        if self.filterCastingTime.currentText() is not '':
+            self.insertData['casting_time'] = self.filterCastingTime.currentText()
+        if len(chosenComponents) > 0:
+            self.insertData['components'] = chosenComponents
+        if self.filterDuration.currentText() is not '':
+            self.insertData['duration'] = self.filterDuration.currentText()
+
+        print(self.insertData)
+
+        #print('Attemping insert...')
+        #print('Instantiating MongoQuerier...')
+        #self.mq = mongoQuerier.MongoQuerier()
+        #print('Executing insert...')
+        #self.mq.insertOne(self.insertData)
 
 
 if __name__ == "__main__":
