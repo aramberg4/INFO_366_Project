@@ -381,7 +381,7 @@ class Ui_windowMain(object):
         print(item.text())
         if column == 0:
             spellName = item.text()
-            spell = self.mq.find_one({'name': spellName})           
+            spell = self.mq.findOne({'name': spellName})           
             cleanDesc = str(spell['desc']).replace('[', '')
             cleanDesc = cleanDesc.replace(']', '')
             cleanDesc = cleanDesc.replace('\'', '')
