@@ -19,11 +19,11 @@ from window_addspell import Ui_windowAdd
 class Ui_windowMain(object):
     def setupUi(self, windowMain):
         windowMain.setObjectName("windowMain")
-        windowMain.resize(1920, 1080)
+        windowMain.resize(1920, 1010)
         windowMain.setMaximumSize(QtCore.QSize(1980, 16777215))
         #background
         oImage = QImage("background.jpg")
-        sImage = oImage.scaled(QSize(1920,1080))  # resize Image to widgets size
+        sImage = oImage.scaled(QSize(1920,1010))  # resize Image to widgets size
         palette = QPalette()
         palette.setBrush(10, QBrush(sImage))    # 10 = Windowrole
         windowMain.setPalette(palette)
@@ -227,10 +227,10 @@ class Ui_windowMain(object):
         self.labelMongoDD.setObjectName("labelMongoDD")
         self.gridLayout.addWidget(self.labelMongoDD, 1, 0, 1, 1)
         self.tableWidget = QtWidgets.QTableWidget(self.centralwidget)
-        self.tableWidget.setGeometry(QtCore.QRect(30, 230, 640, 811))
+        self.tableWidget.setGeometry(QtCore.QRect(30, 230, 640, 771))
         self.tableWidget.setObjectName("spellTable")
         self.spellBox = QtWidgets.QTextEdit(self.centralwidget)
-        self.spellBox.setGeometry(QtCore.QRect(770, 230, 1121, 811))
+        self.spellBox.setGeometry(QtCore.QRect(770, 230, 1121, 771))
         self.spellBox.setObjectName("spellBox")
         self.spellBox.setReadOnly(True)
         windowMain.setCentralWidget(self.centralwidget)
@@ -299,21 +299,23 @@ class Ui_windowMain(object):
         self.labelMongoDD.setText(_translate("windowMain", "Mongo D&D"))
         #Make labels white
         self.labelMongoDD.setStyleSheet('color: white;'
-                                        'font: 20pt "Times New Roman";'
+                                        'font: 24pt "Arial";'
+                                        'font-weight: bold;'
                                             )
-        self.labelName.setStyleSheet('color: white')
-        self.labelLevel.setStyleSheet('color: white')
-        self.labelRange.setStyleSheet('color: white')
-        self.labelSchool.setStyleSheet('color: white')
-        self.labelClasses.setStyleSheet('color: white')
-        self.labelConcentration.setStyleSheet('color: white')
-        self.labelRitual.setStyleSheet('color: white')
-        self.labelComponents.setStyleSheet('color: white')
+        self.labelName.setStyleSheet('color: white;' 'font-weight: bold;')
+        self.labelLevel.setStyleSheet('color: white;' 'font-weight: bold;')
+        self.labelRange.setStyleSheet('color: white;' 'font-weight: bold;')
+        self.labelSchool.setStyleSheet('color: white;' 'font-weight: bold;')
+        self.labelClasses.setStyleSheet('color: white;' 'font-weight: bold;')
+        self.labelConcentration.setStyleSheet('color: white;' 'font-weight: bold;')
+        self.labelRitual.setStyleSheet('color: white;' 'font-weight: bold;')
+        self.labelComponents.setStyleSheet('color: white;''font-weight: bold;')
         #spellBox style
         self.spellBox.setStyleSheet('background-color: rgb(0, 0, 0, 99);'
                                      'border-color: rgb(18, 18, 18);'
                                      'color: rgb(255, 255, 255);'
-                                     'font: 20pt "Times New Roman";'
+                                     'font: 16pt "Arial";'
+                                     'padding: 16px;'
                                         )
 
 
@@ -326,7 +328,7 @@ class Ui_windowMain(object):
         #Add vars to query dictionary
         self.qd = {}
         if self.filterName.text() is not '':
-            self.qd['name'] = self.filterName.text()
+            self.qd['name'] = { '$regex': self.filterName.text(), '$options': 'i' }
         if self.filterLevel.currentText() is not '':
             self.qd['level'] = int(self.filterLevel.currentText())
         if self.filterRange.currentText() is not '':
@@ -386,14 +388,14 @@ class Ui_windowMain(object):
             cleanDesc = cleanDesc.replace(']', '')
             cleanDesc = cleanDesc.replace('\'', '')
             cleanDesc = cleanDesc.replace('â€™','\'')
-            self.spellBox.setText(
-                str(spell["name"]) + '\n' 
-                + 'Level ' + str(spell['level']) +' '+ spell['school']['name'] + '\n' 
-                + 'Casting Time: ' +str(spell['casting_time']) + '\n' 
-                + 'Range: ' +str(spell['range']) + '\n' 
-                + 'Components: '+ ', '.join(spell['components']) + '\n' 
-                + 'Duration: ' + str(spell['duration']) + '\n'
-                + 'Description: ' + cleanDesc + '\n'
+            self.spellBox.setHtml(
+                '<h3>' + str(spell["name"]) + '</h3>' + '<br />' 
+                + '<b>Level</b> ' + str(spell['level']) +' '+ spell['school']['name'] + '<br />' 
+                + '<b>Casting Time:</b> ' +str(spell['casting_time']) + '<br />' 
+                + '<b>Range:</b> ' +str(spell['range']) + '<br />' 
+                + '<b>Components:</b> '+ ', '.join(spell['components']) + '<br />' 
+                + '<b>Duration:</b> ' + str(spell['duration']) + '<br /><br />'
+                + '<b>Description:</b> ' + cleanDesc + '<br />'
                 )
 
     def clearFilters(self):
