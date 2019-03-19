@@ -9,7 +9,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QImage, QPalette, QBrush
 from PyQt5.QtCore import QSize, QRegExp
-from PyQt5.QtWidgets import QCheckBox
+from PyQt5.QtWidgets import QCheckBox, QMessageBox
 import sys
 sys.path.append("..")
 from modules import mongoQuerier
@@ -291,6 +291,9 @@ class Ui_windowAdd(object):
         self.gridLayout_2.addWidget(self.filterDuration, 11, 1, 1, 1)
         # [END] DURATION
 
+        self.msgBoxInvalidInput = QMessageBox()
+        self.msgBoxAlreadyExists = QMessageBox()
+
         windowAdd.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(windowAdd)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 21))
@@ -305,7 +308,7 @@ class Ui_windowAdd(object):
 
     def retranslateUi(self, windowAdd):
         _translate = QtCore.QCoreApplication.translate
-        windowAdd.setWindowTitle(_translate("windowAdd", "Add Spell"))
+        windowAdd.setWindowTitle(_translate("windowAdd", "Add Spell | Mongo D&D"))
         self.buttonSave.setText(_translate("windowAdd", "Save"))
         self.buttonCancel.setText(_translate("windowAdd", "Cancel"))
         self.labelConcentration.setText(_translate("windowAdd", "Concentration"))
@@ -383,6 +386,14 @@ class Ui_windowAdd(object):
         self.checkboxComponentS.setStyleSheet('color: white;''font-weight: bold;')
         self.checkboxComponentM.setStyleSheet('color: white;' 'font-weight: bold;')
 
+        self.msgBoxInvalidInput.setText('Missing input!')
+        self.msgBoxInvalidInput.setInformativeText('Please fill out all fields for the spell before attempting to save.')
+        self.msgBoxInvalidInput.setWindowTitle('Mongo D&D')
+
+        self.msgBoxAlreadyExists.setText('Bah! Cannot add spell.')
+        self.msgBoxAlreadyExists.setInformativeText('A spell with that name already exists! Please enter a unique name to save the spell.')
+        self.msgBoxAlreadyExists.setWindowTitle('Mongo D&D')
+
     def closeWindow(self, windowAdd):
         windowAdd.close()
 
@@ -408,39 +419,62 @@ class Ui_windowAdd(object):
         print(chosenComponents)
 
         # Compile values for each field into a doc
+        # Check for any inputs that have not not been entered, in which case it should
+        # not allow for insertion of spell.
         self.insertData = {}
+        self.nameData = {}
+        validInput = True
         if self.filterName.text() is not '':
             self.insertData['name'] = self.filterName.text()
+            self.nameData['name'] = { '$regex': self.filterName.text(), '$options': 'i' }
+        else: validInput = False
         if self.filterDescription.text() is not '':
             self.insertData['desc'] = self.filterDescription.text()
+        else: validInput = False
         if self.filterLevel.currentText() is not '':
             self.insertData['level'] = int(self.filterLevel.currentText())
+        else: validInput = False
         if self.filterRange.currentText() is not '':
             self.insertData['range'] = self.filterRange.currentText()
+        else: validInput = False
         if self.filterSchool.currentText() is not '':
             self.insertData['school'] = { 'name': self.filterSchool.currentText()}
+        else: validInput = False
         if len(chosenClasses) > 0:
             for chosenClass in chosenClasses:
                 self.insertData['classes'] = chosenClasses
+        else: validInput = False
         if self.filterConcentration.currentText() is not '':
             self.insertData['concentration'] = self.filterConcentration.currentText()
+        else: validInput = False
         if self.filterRitual.currentText() is not '':
             self.insertData['ritual'] = self.filterRitual.currentText()
+        else: validInput = False
         if self.filterCastingTime.currentText() is not '':
             self.insertData['casting_time'] = self.filterCastingTime.currentText()
+        else: validInput = False
         if len(chosenComponents) > 0:
             self.insertData['components'] = chosenComponents
+        else: validInput = False
         if self.filterDuration.currentText() is not '':
             self.insertData['duration'] = self.filterDuration.currentText()
+        else: validInput = False
 
-        print(self.insertData)
-
-        print('Attemping insert...')
-        print('Instantiating MongoQuerier...')
         self.mq = mongoQuerier.MongoQuerier()
-        print('Executing insert...')
-        self.mq.insertOne(self.insertData)
-        self.closeWindow(windowAdd)
+
+        # Querying database to see if spell with the same name already exists.
+        self.cursor = self.mq.find(self.nameData)
+
+        if (validInput == False):
+            # All inputs not filled out---show message box.
+            self.msgBoxInvalidInput.exec_()
+        elif (self.cursor.count() == 1):
+            # Spell with same name already exists---show message box.
+            self.msgBoxAlreadyExists.exec_()
+        else:
+            # Insert data into the database.
+            self.mq.insertOne(self.insertData)
+            self.closeWindow(windowAdd)
 
 
 if __name__ == "__main__":
