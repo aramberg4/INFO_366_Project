@@ -15,6 +15,7 @@ sys.path.append("..")
 from modules import mongoQuerier
 from pprint import pprint
 from window_addspell import Ui_windowAdd
+from window_editspell import Ui_windowEdit
 
 class Ui_windowMain(object):
     def setupUi(self, windowMain):
@@ -253,7 +254,7 @@ class Ui_windowMain(object):
 
         # Spell selection table
         self.tableWidget = QtWidgets.QTableWidget(self.centralwidget)
-        self.tableWidget.setGeometry(QtCore.QRect(30, 230, 640, 771))
+        self.tableWidget.setGeometry(QtCore.QRect(30, 230, 660, 771))
         self.tableWidget.setObjectName("spellTable")
 
         # Spell details
@@ -456,7 +457,10 @@ class Ui_windowMain(object):
         self.window.show()
 
     def editSpell(self):
-        placeholder = {}
+        self.window = QtWidgets.QMainWindow()
+        self.ui = Ui_windowEdit()
+        self.ui.setupUi(self.window)
+        self.window.show()
 
     def deleteSpell(self):
         response = self.msgBoxConfirmDelete.exec_()
