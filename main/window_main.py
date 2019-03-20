@@ -226,13 +226,42 @@ class Ui_windowMain(object):
         self.labelMongoDD.setFont(font)
         self.labelMongoDD.setObjectName("labelMongoDD")
         self.gridLayout.addWidget(self.labelMongoDD, 1, 0, 1, 1)
+
+        # Edit and delete spell buttons
+        self.layoutOptionsWidget = QtWidgets.QWidget(self.gridLayoutWidget)
+        self.layoutOptionsWidget.setObjectName("layoutOptionsWidget")
+        self.layoutOptions = QtWidgets.QGridLayout(self.layoutOptionsWidget)
+        self.layoutOptions.setContentsMargins(0, 0, 0, 0)
+        self.layoutOptions.setObjectName("layoutOptions")
+
+        self.buttonEditSpell = QPushButton(self.layoutOptionsWidget)
+        self.buttonEditSpell.clicked.connect(self.editSpell)
+        self.buttonEditSpell.setEnabled(False)
+
+        self.buttonDeleteSpell = QPushButton(self.layoutOptionsWidget)
+        self.buttonDeleteSpell.clicked.connect(self.deleteSpell)
+        self.buttonDeleteSpell.setEnabled(False)
+
+        self.msgBoxConfirmDelete = QMessageBox()
+        self.msgBoxConfirmDelete.addButton('Yes', QMessageBox.AcceptRole)
+        self.msgBoxConfirmDelete.addButton('No', QMessageBox.RejectRole)
+
+        self.layoutOptions.addWidget(self.buttonEditSpell, 0, 0, 1, 1)
+        self.layoutOptions.addWidget(self.buttonDeleteSpell, 0, 1, 1, 1)
+
+        self.gridLayout.addWidget(self.layoutOptionsWidget, 5, 9, 1, 1)
+
+        # Spell selection table
         self.tableWidget = QtWidgets.QTableWidget(self.centralwidget)
         self.tableWidget.setGeometry(QtCore.QRect(30, 230, 640, 771))
         self.tableWidget.setObjectName("spellTable")
+
+        # Spell details
         self.spellBox = QtWidgets.QTextEdit(self.centralwidget)
         self.spellBox.setGeometry(QtCore.QRect(770, 230, 1121, 771))
         self.spellBox.setObjectName("spellBox")
         self.spellBox.setReadOnly(True)
+
         windowMain.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(windowMain)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1920, 22))
@@ -318,6 +347,12 @@ class Ui_windowMain(object):
                                      'padding: 16px;'
                                         )
 
+        self.buttonEditSpell.setText(_translate("windowMain", "Edit Spell"))
+        self.buttonDeleteSpell.setText(_translate("windowMain", "Delete Spell"))
+
+        self.msgBoxConfirmDelete.setText('Please confirm:')
+        self.msgBoxConfirmDelete.setInformativeText('Are you sure you want to delete this spell?')
+        self.msgBoxConfirmDelete.setWindowTitle('Mongo D&D')
 
         self.buttonSubmit.clicked.connect(self.submitQuery)
         self.tableWidget.cellClicked.connect(self.populateSpellBox)
@@ -382,6 +417,9 @@ class Ui_windowMain(object):
         print(str(row) + ',' + str(column))
         print(item.text())
         if column == 0:
+            self.buttonEditSpell.setEnabled(True)
+            self.buttonDeleteSpell.setEnabled(True)
+
             spellName = item.text()
             spell = self.mq.findOne({'name': spellName})           
             cleanDesc = str(spell['desc']).replace('[', '')
@@ -397,6 +435,9 @@ class Ui_windowMain(object):
                 + '<b>Duration:</b> ' + str(spell['duration']) + '<br /><br />'
                 + '<b>Description:</b> ' + cleanDesc + '<br />'
                 )
+        else:
+            self.buttonEditSpell.setEnabled(False)
+            self.buttonDeleteSpell.setEnabled(False)
 
     def clearFilters(self):
         self.filterName.clear()
@@ -413,7 +454,21 @@ class Ui_windowMain(object):
         self.ui = Ui_windowAdd()
         self.ui.setupUi(self.window)
         self.window.show()
- 
+
+    def editSpell(self):
+        placeholder = {}
+
+    def deleteSpell(self):
+        response = self.msgBoxConfirmDelete.exec_()
+        spell = {}
+        if (response == 0):
+            # User reponds "Yes" to confirmation
+            spell['name'] = self.tableWidget.currentItem().text()
+            self.mq = mongoQuerier.MongoQuerier()
+            self.mq.deleteOne(spell)
+            # Submit query again to refresh the spell list
+            self.submitQuery()
+
 
 if __name__ == "__main__":
     import sys
