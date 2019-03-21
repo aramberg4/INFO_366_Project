@@ -53,14 +53,14 @@ class MongoQuerier():
 	# setDict: 	 dictionary with fields/values to be changed
 	# upsert:    boolean
 	def updateOne(self, queryDict, setDict, upsert):
-		self.__collection.update_one(queryDict, setDict,{'upsert': upsert})
+		self.__collection.update_one(queryDict, setDict, upsert)
 
 	# purpose: 	 update many documents at the same time
 	# queryDict: dictionary for query filter
 	# setDict: 	 dictionary with fields/values to be changed
 	# upsert:    boolean
 	def updateMany(self, queryDict, setDict, upsert):
-		self.__collection.update_many(queryDict, setDict,{'upsert': upsert})
+		self.__collection.update_many(queryDict, setDict, upsert)
 
 
 	#delete

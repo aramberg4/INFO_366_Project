@@ -8,7 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QImage, QPalette, QBrush
-from PyQt5.QtCore import QSize, QRegExp
+from PyQt5.QtCore import QSize, QRegExp, QObject, pyqtSignal
 from PyQt5.QtWidgets import QCheckBox, QMessageBox
 import sys
 sys.path.append("..")
@@ -218,6 +218,8 @@ class Ui_windowEdit(object):
         self.componentLayout.addWidget(self.checkboxComponentM, 0, 2, 1, 1)
         # [END] COMPONENTS
 
+        self.nameData = {}
+
         self.msgBoxInvalidInput = QMessageBox()
         self.msgBoxAlreadyExists = QMessageBox()
 
@@ -305,39 +307,69 @@ class Ui_windowEdit(object):
     def closeWindow(self, windowEdit):
         windowEdit.close()
 
-    def loadSpell(self, windowEdit):
-        placeholder = {}
+    def loadSpell(self, spellInfo):
+        # Populate the fields with the values from spellInfo
+        
+        self.filterName.setText(spellInfo['name'])
+        self.nameData['name'] = { '$regex': self.filterName.text(), '$options': 'i' }
+        self.filterDescription.setText(spellInfo['desc'][0])
+
+        # Fields utilizing combo boxes need index of item that it should be set to
+        levelIndex = self.filterLevel.findText(str(spellInfo['level']), QtCore.Qt.MatchFixedString)
+        if (levelIndex >= 0):
+            self.filterLevel.setCurrentIndex(levelIndex)
+
+        schoolIndex = self.filterSchool.findText(spellInfo['school']['name'], QtCore.Qt.MatchFixedString)
+        if (schoolIndex >= 0):
+            self.filterSchool.setCurrentIndex(schoolIndex)
+
+        classesArray = spellInfo['classes']
+        classes = []
+        for c in classesArray:
+            classes.append(c['name'])
+
+        for checkboxClass in self.classLayout.parentWidget().findChildren(QCheckBox):
+            checkboxClassText = checkboxClass.text()
+            if (checkboxClassText in classes):
+                checkboxClass.setCheckState(2)
+
+        concentrationIndex = self.filterConcentration.findText(spellInfo['concentration'], QtCore.Qt.MatchFixedString)
+        if (concentrationIndex >= 0):
+            self.filterConcentration.setCurrentIndex(concentrationIndex)
+
+        ritualIndex = self.filterRitual.findText(spellInfo['ritual'], QtCore.Qt.MatchFixedString)
+        if (ritualIndex >= 0):
+            self.filterRitual.setCurrentIndex(ritualIndex)
+
+        components = spellInfo['components']
+        for checkboxComponent in self.componentLayout.parentWidget().findChildren(QCheckBox):
+            checkboxComponentText = checkboxComponent.text()
+            if (checkboxComponentText in components):
+                checkboxComponent.setCheckState(2)
+
 
     def saveSpell(self, windowEdit):
         # Check which classes are selected
-        i = 0
         chosenClasses = []
         # Iterating through classLayout and returns list of classes selected
         for checkboxClass in self.classLayout.parentWidget().findChildren(QCheckBox):
             if checkboxClass.isChecked():
                 chosenClasses.append({ 'name': checkboxClass.text() })
-                i += 1
-        print(chosenClasses)
 
         # Check which components are selected
-        j = 0
         chosenComponents = []
         # Iterating through componentLayout and returns list of components selected
         for checkboxComponent in self.componentLayout.parentWidget().findChildren(QCheckBox):
             if checkboxComponent.isChecked():
                 chosenComponents.append(checkboxComponent.text())
-                j += 1
-        print(chosenComponents)
 
         # Compile values for each field into a doc
         # Check for any inputs that have not not been entered, in which case it should
         # not allow for insertion of spell.
         self.insertData = {}
-        self.nameData = {}
         validInput = True
         if self.filterName.text() is not '':
             self.insertData['name'] = self.filterName.text()
-            self.nameData['name'] = { '$regex': self.filterName.text(), '$options': 'i' }
         else: validInput = False
         if self.filterDescription.text() is not '':
             self.insertData['desc'] = self.filterDescription.text()
@@ -364,18 +396,14 @@ class Ui_windowEdit(object):
 
         self.mq = mongoQuerier.MongoQuerier()
 
-        # Querying database to see if spell with the same name already exists.
-        self.cursor = self.mq.find(self.nameData)
+        print(self.nameData)
 
         if (validInput == False):
             # All inputs not filled out---show message box.
             self.msgBoxInvalidInput.exec_()
-        elif (self.cursor.count() == 1):
-            # Spell with same name already exists---show message box.
-            self.msgBoxAlreadyExists.exec_()
         else:
             # Insert data into the database.
-            self.mq.insertOne(self.insertData)
+            self.mq.updateOne(self.nameData, {'$set': self.insertData}, True)
             self.closeWindow(windowEdit)
 
 

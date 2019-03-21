@@ -8,7 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QImage, QPalette, QBrush
-from PyQt5.QtCore import QSize
+from PyQt5.QtCore import QSize, QObject, pyqtSignal
 from PyQt5.QtWidgets import *
 import sys
 sys.path.append("..")
@@ -17,7 +17,9 @@ from pprint import pprint
 from window_addspell import Ui_windowAdd
 from window_editspell import Ui_windowEdit
 
-class Ui_windowMain(object):
+class Ui_windowMain(QObject):
+    editSpellInfo = pyqtSignal(dict)
+
     def setupUi(self, windowMain):
         windowMain.setObjectName("windowMain")
         windowMain.resize(1920, 1010)
@@ -239,6 +241,11 @@ class Ui_windowMain(object):
         self.buttonEditSpell.clicked.connect(self.editSpell)
         self.buttonEditSpell.setEnabled(False)
 
+        self.editWindow = QtWidgets.QMainWindow()
+        self.editUI = Ui_windowEdit()
+        self.editUI.setupUi(self.editWindow)
+        self.editSpellInfo.connect(self.editUI.loadSpell)
+
         self.buttonDeleteSpell = QPushButton(self.layoutOptionsWidget)
         self.buttonDeleteSpell.clicked.connect(self.deleteSpell)
         self.buttonDeleteSpell.setEnabled(False)
@@ -457,10 +464,14 @@ class Ui_windowMain(object):
         self.window.show()
 
     def editSpell(self):
-        self.window = QtWidgets.QMainWindow()
-        self.ui = Ui_windowEdit()
-        self.ui.setupUi(self.window)
-        self.window.show()
+        # Retrieve the selected spell's information
+        spellName = self.tableWidget.currentItem().text()
+        self.mq = mongoQuerier.MongoQuerier()
+        spellInfo = self.mq.findOne({'name': spellName})
+
+        # Emit signal so that editWindow has the spell information needed to load the spell
+        self.editSpellInfo.emit(spellInfo)
+        self.editWindow.show()
 
     def deleteSpell(self):
         response = self.msgBoxConfirmDelete.exec_()

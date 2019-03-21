@@ -293,6 +293,8 @@ class Ui_windowAdd(object):
 
         self.msgBoxInvalidInput = QMessageBox()
         self.msgBoxAlreadyExists = QMessageBox()
+        self.msgBoxAlreadyExists.addButton('Yes', QMessageBox.AcceptRole)
+        self.msgBoxAlreadyExists.addButton('No', QMessageBox.RejectRole)
 
         windowAdd.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(windowAdd)
@@ -391,8 +393,8 @@ class Ui_windowAdd(object):
         self.msgBoxInvalidInput.setInformativeText('Please fill out all fields for the spell before attempting to save.')
         self.msgBoxInvalidInput.setWindowTitle('Mongo D&D')
 
-        self.msgBoxAlreadyExists.setText('Bah! Cannot add spell.')
-        self.msgBoxAlreadyExists.setInformativeText('A spell with that name already exists! Please enter a unique name to save the spell.')
+        self.msgBoxAlreadyExists.setText('Duplicate spell!')
+        self.msgBoxAlreadyExists.setInformativeText('A spell with that name already exists! Saving will overwrite the existing spell. Are you sure?')
         self.msgBoxAlreadyExists.setWindowTitle('Mongo D&D')
 
     def closeWindow(self, windowAdd):
@@ -400,24 +402,18 @@ class Ui_windowAdd(object):
 
     def saveSpell(self, windowAdd):
         # Check which classes are selected
-        i = 0
         chosenClasses = []
         # Iterating through classLayout and returns list of classes selected
         for checkboxClass in self.classLayout.parentWidget().findChildren(QCheckBox):
             if checkboxClass.isChecked():
                 chosenClasses.append({ 'name': checkboxClass.text() })
-                i += 1
-        print(chosenClasses)
 
         # Check which components are selected
-        j = 0
         chosenComponents = []
         # Iterating through componentLayout and returns list of components selected
         for checkboxComponent in self.componentLayout.parentWidget().findChildren(QCheckBox):
             if checkboxComponent.isChecked():
                 chosenComponents.append(checkboxComponent.text())
-                j += 1
-        print(chosenComponents)
 
         # Compile values for each field into a doc
         # Check for any inputs that have not not been entered, in which case it should
@@ -470,8 +466,13 @@ class Ui_windowAdd(object):
             # All inputs not filled out---show message box.
             self.msgBoxInvalidInput.exec_()
         elif (self.cursor.count() == 1):
-            # Spell with same name already exists---show message box.
-            self.msgBoxAlreadyExists.exec_()
+            # Spell with same name already exists---show message box asking for 
+            # confirmation that they are okay with overwriting the spell.
+            response = self.msgBoxAlreadyExists.exec_()
+            if (response == 0):
+                # User reponds "Yes" to overwriting the spell.
+                self.mq.updateOne(self.nameData, {'$set': self.insertData}, True)
+                self.closeWindow(windowAdd)
         else:
             # Insert data into the database.
             self.mq.insertOne(self.insertData)
